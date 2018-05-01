@@ -1,8 +1,8 @@
-name := "scala-oriented"
+name := "scala-oriented-core"
 
 organization := "com.itsmeijers"
 
-version := "0.1.5-SNAPSHOT"
+version := "0.1.6-SNAPSHOT"
 
 scalaVersion := "2.11.8"
 

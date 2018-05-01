@@ -27,11 +27,8 @@ trait ClientInterpreter[G[_]] extends (ClientDSL ~> G) {
     EdgeType(graph.createEdgeType(orientFormat.name))
 
   private def addVertex[A](vertexModel: A, orientFormat: OrientFormat[A]): Vertex[A] = {
-    val vertex: OrientVertex = graph.addVertex(s"class:${orientFormat.name}", new util.ArrayList[Any]())
     val serialized = orientFormat.properties(vertexModel).asJava
-
-    vertex.setProperties(serialized)
-
+    val vertex: OrientVertex = graph.addVertex(s"class:${orientFormat.name}", serialized)
     Vertex(vertexModel, vertex)
   }
 
