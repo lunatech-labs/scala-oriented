@@ -2,7 +2,7 @@ name := "scala-oriented"
 
 organization := "com.itsmeijers"
 
-version := "0.1.3-SNAPSHOT"
+version := "0.1.5-SNAPSHOT"
 
 scalaVersion := "2.11.8"
 
@@ -35,6 +35,7 @@ libraryDependencies ++= Seq(
   , "org.spire-math"               %% "kind-projector"   % "0.7.1"
   , "com.milessabin"               %% "si2712fix-plugin" % "1.2.0" cross CrossVersion.full
   , "com.chuusai"                  %% "shapeless"        % "2.3.2"
+  , "org.julienrf"                 %% "enum"             % "3.0"
 )
 
 addCompilerPlugin("org.spire-math" %% "kind-projector" % "0.7.1")
