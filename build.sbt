@@ -1,6 +1,6 @@
 name := "scala-oriented-core"
 
-organization := "com.itsmeijers"
+organization := "com.lunatech"
 
 version := "0.1.6-SNAPSHOT"
 
@@ -42,3 +42,8 @@ addCompilerPlugin("org.spire-math" %% "kind-projector" % "0.7.1")
 addCompilerPlugin("com.milessabin" % "si2712fix-plugin" % "1.2.0" cross CrossVersion.full)
 
 fork := true
+
+publishTo <<= version { (v: String) =>
+  val path = if(v.trim.endsWith("SNAPSHOT")) "snapshots-public" else "releases-public"
+  Some(Resolver.url("Lunatech Artifactory", new URL(s"http://artifactory.lunatech.com/artifactory/$path/")))
+}
