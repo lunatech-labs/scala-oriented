@@ -27,11 +27,29 @@ sealed trait OrientClient {
 
   /**
     * Returns a graph instance that has transactions disabled.
+    * From the OrientDB Docs:
+    *
+    *  When building multi-threaded application, use one instance
+    * of OrientGraph per thread. Bear in mind that all graph components,
+    * such as vertices and edges, are not thread safe. So, sharing them
+    * between threads may result in unpredictable results.
+    *
+    * Remember to always close the graph instance when you are done with
+    * it, using the .shutdown() method.
     */
   def graphNoTransaction: OrientGraphNoTx = factory.getNoTx
 
   /**
     * Returns a graph instances that has transactions enabled.
+    * From the OrientDB Docs:
+    *
+    *  When building multi-threaded application, use one instance
+    * of OrientGraph per thread. Bear in mind that all graph components,
+    * such as vertices and edges, are not thread safe. So, sharing them
+    * between threads may result in unpredictable results.
+    *
+    * Remember to always close the graph instance when you are done with
+    * it, using the .shutdown() method.
     */
   def graph: OrientGraph = factory.getTx
 
@@ -82,8 +100,9 @@ sealed trait OrientClient {
                       (implicit orientFormat: OrientFormat[A]): OrientIO[Edge[A]] =
     C.addEdge[A, B, C](edgeModel, inVertex, outVertex, orientFormat)
 
-  def shutdown(close: Boolean = false): OrientIO[Unit] =
+  def shutdown(close: Boolean = false): OrientIO[Unit] = {
     C.shutdown(close)
+  }
 }
 
 /**
@@ -93,7 +112,7 @@ case class InMemoryClient(db: String, user: String = "root", password: String = 
 
   val uri: String = s"memory:$db"
 
-  val serverAdmin: OServerAdmin = new OServerAdmin(uri)
+  lazy val serverAdmin: OServerAdmin = new OServerAdmin(uri)
 
 }
 
@@ -102,7 +121,7 @@ case class InMemoryClient(db: String, user: String = "root", password: String = 
   */
 case class PLocalClient(uri: String, user: String, password: String, pool: Option[(Int, Int)] = None) extends OrientClient {
 
-  val serverAdmin: OServerAdmin = new OServerAdmin(uri).connect(user, password)
+  lazy val serverAdmin: OServerAdmin = new OServerAdmin(uri).connect(user, password)
 
 }
 
@@ -111,6 +130,6 @@ case class PLocalClient(uri: String, user: String, password: String, pool: Optio
   */
 case class RemoteClient(uri: String, user: String, password: String, pool: Option[(Int, Int)] = None) extends OrientClient {
 
-  val serverAdmin: OServerAdmin = new OServerAdmin(uri).connect(user, password)
+  lazy val serverAdmin: OServerAdmin = new OServerAdmin(uri).connect(user, password)
 
 }
